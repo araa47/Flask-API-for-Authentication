@@ -4,7 +4,7 @@
 
 The following project is a simple python flask program that hosts a REST API with support for user authentication and storing data on a postgres sql db. 
 
-The program uses postgres sql database, one for testing and another for development. Both need to be set-up before starting with this project. The program also requires python3 installed in your computer. 
+The program uses postgres sql database, one for testing and another for development. Both need to be set-up before starting with this project. The program also requires python3 installed in your computer. If you want the simplest way to deploy, please skip to Heroku Deployment.
 
 
 ## Set-up and Installation and Testing 
@@ -75,14 +75,16 @@ To acess the website simply go to the url of the API followed by /login.html, in
 
 Currently there are a couple of endpoints that have been developed and tested but not all endpoints are used by the website.
 
-1) POST: /api/v1/users - create a user(CREATE). You will need to enter the following json information in the body as application json. 
+1) POST: /api/v1/users - create a user(CREATE). You will need to enter the following json information in the body as application json. Genetic result and policy are not required and are not filled in by the user when logging in through the login page. Currently the simplest method to update this would be to directly talk to the database or use the PUT method in method 5. 
 ```
 {
 "email":"testemail@email.com",
 "password": "testpass",
 "first_name": "Testname",
 "last_name": "Lastname",
-"dob": "1995-02-02"
+"dob": "1995-02-02",
+"genetic_result": {"DNA": "XY","XDNA": "YY"},
+"policy":"A1B2C3D4"
 }
 ```
 The above request will get either a json response with "error" describing the error or return a jwt-token which will be needed to be saved to be used to acess the stats of the user. 
@@ -124,7 +126,7 @@ jwt-token will be required to be added in the 'HEADERS' of the delete request as
 ## Design
 
 ### Database 
-I chose PostgreSQL for the database and Flask for the API. Everything is simply connected using manage.py file that helps with migrations as decsribed in steps 7-9 of the installation instructions. The database model can be found in the /src/models/UserModel.py file. Currenlty everything is stored in a single table for simplicity, but in the future I would like to keep authentication in a single table and the Genetic Result and Policy info in a different one. This also ensures users only may be able to modify their personal infomration and not the policy number or genetic result. However this was not done to save time for this deployment. The user only is able to modify the other values since the frontend restricts acess however using the POST API it is possible to modify any of these values. 
+I chose PostgreSQL for the database and Flask for the API. Everything is simply connected using manage.py file that helps with migrations as decsribed in steps 7-9 of the installation instructions. The database model can be found in the /src/models/UserModel.py file. Currenlty everything is stored in a single table for simplicity, but in the future I would like to keep authentication in a single table and the Genetic Result and Policy info in a different one. This also ensures users only may be able to modify their personal infomration and not the policy number or genetic result. However this was not done to save time for this deployment. The user only is able to modify the other values since the frontend restricts acess however using the POST API it is possible to modify any of these values. In the future this seperation would allow user accounts with mutliple users inside, making it easy to build solutions for corporate accounts with multiple users using the new db model. 
 
 ### API 
 For the API I have used python flask due to ease of development and deployment using services such as heroku. The User API is mostly avaialbale in the /src/views/UserView file while the 3 simple static pages are being served from the Home API in the /src/views/HomeView file. In order to encrypt communication JWT tokens are being used for authentication, for further security, SSL certificate would be required to ensure all the communication is encrypted. 

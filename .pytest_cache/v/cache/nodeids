@@ -1,0 +1,13 @@
+[
+  "src/tests/test_users.py::UsersTest::test_delete_user",
+  "src/tests/test_users.py::UsersTest::test_user_creation",
+  "src/tests/test_users.py::UsersTest::test_user_creation_with_empty_request",
+  "src/tests/test_users.py::UsersTest::test_user_creation_with_existing_email",
+  "src/tests/test_users.py::UsersTest::test_user_creation_with_no_email",
+  "src/tests/test_users.py::UsersTest::test_user_creation_with_no_password",
+  "src/tests/test_users.py::UsersTest::test_user_get_me",
+  "src/tests/test_users.py::UsersTest::test_user_login",
+  "src/tests/test_users.py::UsersTest::test_user_login_with_invalid_email",
+  "src/tests/test_users.py::UsersTest::test_user_login_with_invalid_password",
+  "src/tests/test_users.py::UsersTest::test_user_update_me"
+]

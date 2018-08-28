@@ -108,10 +108,16 @@ jwt-token will be required to be added in the 'HEADERS' of the get request as 'a
 jwt-token will be required to be added in the 'HEADERS' of the get request as 'api-token'
 
 5) PUT /api/v1/users/me - update my account(UPDATE)
-jwt-token will be required to be added in the 'HEADERS' of the get request as 'api-token'
+jwt-token will be required to be added in the 'HEADERS' of the post request as 'api-token'. Plus any information to be changed needs to be added to the body. 
+```
+{
 
+"first_name": "NewFirstName"
+
+}
+```
 6) DELETE /api/v1/users/me - Delete my account(DELETE)
-jwt-token will be required to be added in the 'HEADERS' of the get request as 'api-token'
+jwt-token will be required to be added in the 'HEADERS' of the delete request as 'api-token'
 
 
 

@@ -1,0 +1,128 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+
+<body class="body">
+	<header>
+		
+	</header>
+	 <body>
+	 <div style="margin:20px;"></div>
+	   <h1 style="margin-right: auto;margin-left: 20px;">Prenetics Info</h1>
+	 
+	 </body>
+
+
+  <table class="table table-inverse">
+  <thead>
+    <tr>
+       <th>#</th>
+      <th>Details</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">First Name</th>
+      <td><div id="first_name" style="margin: auto;"> </div></td>
+
+    </tr>
+    <tr>
+      <th scope="row">Last Name</th>
+     <td><div id="last_name" style="margin: auto;"> </div></td>
+     
+    </tr>
+     <tr>
+      <th scope="row">Email</th>
+      <td><div id="email" style="margin: auto;"> </div></td>
+     
+    </tr>
+
+        </tr>
+     <tr>
+      <th scope="row">Date of Birth</th>
+      <td><div id="dob" style="margin: auto;"> </div></td>
+     
+    </tr>
+        </tr>
+     <tr>
+      <th scope="row">Policy Code</th>
+      <td><div id="policy" style="margin: auto;"> </div></td>
+     
+    </tr>
+        </tr>
+     <tr>
+      <th scope="row">Genetic Result</th>
+      <td><div id="genetic" style="margin: auto;"> </div></td>
+     
+    </tr>
+
+  </tbody>
+</table>
+<button class="btn btn-lg btn-primary btn-block" type="button", onclick="location.href = 'login.html';">LogOut </button>
+      <p class="mt-5 mb-3 text-muted"></p>
+<script type="text/javascript">
+  
+function populate(){
+
+  var token = parent.document.URL.substring(parent.document.URL.indexOf('?'), parent.document.URL.length);
+  token = token.split('=')[1]
+  console.log(token)
+  GrabStats(token)
+  
+}
+window.onload= populate;
+
+
+function GrabStats(token){
+
+    var api_url = "http://127.0.0.1:5000/api/v1/users/me"
+    var xhttp = new XMLHttpRequest();
+    
+
+    
+
+    xhttp.onreadystatechange = function() {
+            // if ok 
+            if (this.readyState == 4 && this.status == 200) {
+            // response is the json version of response
+                var response = JSON.parse(this.responseText)
+                
+                console.log(response)
+                document.getElementById("first_name").innerHTML = response['first_name'];
+                document.getElementById("last_name").innerHTML = response['last_name'];
+                document.getElementById("email").innerHTML = response['email'];
+                document.getElementById("dob").innerHTML = response['dob'];
+                document.getElementById("policy").innerHTML = response['policy'];
+                document.getElementById("genetic").innerHTML = response['genetic_result'];
+              //  alert("sucess!");
+
+                }
+                // Now send a request to login after sign up sucessful
+
+            else {  
+              var response = this.responseText
+              console.log("Error")
+              console.log(response)
+              
+             // alert(response)
+
+              // alert users 
+            }
+
+        }
+                     
+        
+        xhttp.open("GET", api_url, true);
+        xhttp.setRequestHeader('Content-Type', 'application/json');
+        xhttp.setRequestHeader('api-token', token)
+      ;
+        xhttp.send();
+      
+    
+   }
+
+</script>

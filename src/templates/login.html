@@ -1,0 +1,114 @@
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Signin Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
+  </head>
+
+  <body class="text-center">
+    <form class="form-signin">
+      <img class="mb-4" src="https://res-5.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/v1451275976/pi8bhxajuqaosxrhdqe2.jpg" alt="" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+      <button class="btn btn-lg btn-primary btn-block" type="button", onclick="Login();">Sign in </button>
+      <p class="mt-5 mb-3 text-muted"></p>
+      <button class="btn btn-lg btn-primary btn-block" type="button", onclick="location.href = 'signup.html';">Register </button>
+      <p class="mt-5 mb-3 text-muted"></p>
+      <div id="textbox" style="margin: auto;"> </div>
+    </form>
+  </body>
+</html>
+
+
+
+
+
+ <script type="text/javascript">
+   
+
+  function Login(){
+
+    var api_url = "http://127.0.0.1:5000/api/v1/users/login"
+    var xhttp = new XMLHttpRequest();
+    
+
+    var email = document.getElementById('inputEmail').value 
+    var password = document.getElementById('inputPassword').value 
+    
+
+    var data = {"email": email,
+                "password": password,
+                }
+
+    xhttp.onreadystatechange = function() {
+            // if ok 
+            if (this.readyState == 4 && this.status == 200) {
+            // response is the json version of response
+                var response = JSON.parse(this.responseText)
+                
+                var jwt_token = response["jwt_token"]
+                document.getElementById('textbox').innerHTML = jwt_token
+                console.log(response)
+                console.log(jwt_token)
+                OpenStats(jwt_token); 
+              //  alert("sucess!");
+
+                }
+                // Now send a request to login after sign up sucessful
+
+            else {  
+              var response = this.responseText
+              console.log("Error")
+              console.log(response)
+              document.getElementById('textbox').innerHTML = response
+                response = JSON.stringify(response)
+             // alert(response)
+
+              // alert users 
+            }
+
+        }
+              
+
+    
+        
+        
+        xhttp.open("POST", api_url, true);
+        xhttp.setRequestHeader('Content-Type', 'application/json');
+       
+        xhttp.send(JSON.stringify(data));
+
+    
+   }
+
+
+
+function OpenStats(jwt_token){
+
+    url_text = 'stats.html?token=' + jwt_token
+    location.href = url_text
+
+
+   }
+
+
+
+
+
+
+ </script>

@@ -94,7 +94,7 @@ function GrabStats(token){
                 document.getElementById("email").innerHTML = response['email'];
                 document.getElementById("dob").innerHTML = response['dob'];
                 document.getElementById("policy").innerHTML = response['policy'];
-                document.getElementById("genetic").innerHTML = response['genetic_result'];
+                document.getElementById("genetic").innerHTML = JSON.stringify(response['genetic_result']);
               //  alert("sucess!");
 
                 }

@@ -19,9 +19,9 @@ The program uses postgres sql database, one for testing and another for developm
 
 1) Make sure you have pipenv installed if not please run ``` pip install pipenv  ```
 
-1) ```git clone https://github.com/araa/ ```
+1) ```git clone https://github.com/araa47/Flask-API-for-Authentication ```
 
-2) ``` cd project  ```
+2) ``` cd Flask-API-for-Authentication  ```
 
 3) ``` pipenv install```
 
@@ -29,7 +29,7 @@ The program uses postgres sql database, one for testing and another for developm
 
 5) Once you have both the databases, create a user with only read and write acess to the database 
 
-6) Currently there are a few config variables you will need to set in order to run the program they can be found in the env.example file. This file needs to be copied, and renamed as .env  . Afer this you can modify the variables to the values you need
+6) Currently there are a few config variables you will need to set in order to run the program they can be found in the .env.sample file. This file needs to be copied, and renamed as .env  . Afer this you can modify the variables to the values you need
 
 7) Once you have these values populated, you can initialize a migration ```python manage.py db init```. This should create a new migration subfolder in the project directory 
 
@@ -39,13 +39,31 @@ The program uses postgres sql database, one for testing and another for developm
 
 10) You can confirm if the tables were created by running the ```psql``` command then running ```\connect dna``` and finally ```\dt``` to check wheter the users table was created. 
 
-11) If everything went smoothly you are ready to run this project on a local environment for development. Simply run  ```python run.py``` to run the project. This should get the API running and also allow acess to the simple User Interface for testing. 
+11) Since the project is ready to run on heroku already, if you want to test on your local environment you will need to make a few minor changes. You will have to adjust the api_url to localhost on all the .html files under /src/templates/. This is so each page sends the requests to the correct API. It has although been changed to the heroku URL for current deployment. 
+
+12) If everything went smoothly you are ready to run this project on a local environment for development. Simply run  ```python run.py``` to run the project. This should get the API running and also allow acess to the simple User Interface for testing. 
 
 
 
 ## C) Testing 
 
 The project currently has tests in the /src/tests/test_users.py file. In order to run the tests simply run ```pytest --cov=src``` which currently has about 90% coverage of all the code in this project. If all the tests pass you are ready for running the website and API. 
+
+
+## D) Heroku Deployment 
+
+1) Clone project to your own github 
+
+2) Create app on Heroku 
+
+3) Connect to github project 
+
+4) Add postgresql to the project or host your own database and note down the URL
+
+5) Go into Heroku app settings and "Reveal Config Vars"
+
+6) Fill in the config variables just like in the sample.env file. If you used the addon database, the database URL should be auto populated. 
+
 
 ## Website 
 
@@ -106,6 +124,18 @@ For the API I have used python flask due to ease of development and deployment u
 ### Scaling 
 
 There are multiple ways to approach this problem. This whole project could be run in a docker container, running multiple instances of the flask server connected to the same database through a load balancing server. This would make scaling up and down easy but still would require some modifcations. For even simpler scaling, this could be run using gunicorn on Heroku allowing you to simply scale the project by inceeasing the number of instances. However this may be slightly more pricey. 
+
+## Future Updates 
+
+1) Remove unecessary API endpoints 
+2) Create a new table for genetics and policy number 
+3) Create custom methods to modify these genetics and policy that are only available for admins 
+4) Work on a better User Interface and handle some more checks in the front-end 
+5) Instead of using the url to trasnfer the jwt-token between pages, use a different method that does not give away the jwt-token in the URL (maybe localstorage)
+6) Add captcha, remember me on login page 
+7) Imporve API by limiting acess if more than 3 failed consecutive login attempts are made 
+8) Add some regex to ensure password is strong, and also add minimum characters to make it more secure 
+9) Enable SSL encryption on the server 
 
 
 

@@ -64,6 +64,8 @@ The project currently has tests in the /src/tests/test_users.py file. In order t
 
 6) Fill in the config variables just like in the sample.env file. If you used the addon database, the database URL should be auto populated. 
 
+7) Finally open the console on Heroku and run the db migration commands to fill the database. This is only required if its the first time using a new database. 
+
 
 ## Website 
 

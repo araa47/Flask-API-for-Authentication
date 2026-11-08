@@ -1,6 +1,7 @@
 # /src/views/UserView
 
 from flask import request, json, Response, Blueprint, g
+from marshmallow import ValidationError
 from ..models.UserModel import UserModel, UserSchema
 from ..shared.Authentication import Auth
 
@@ -15,10 +16,10 @@ def create():
   Create User Function
   """
     req_data = request.get_json()
-    data, error = user_schema.load(req_data)
-
-    if error:
-        return custom_response(error, 400)
+    try:
+        data = user_schema.load(req_data)
+    except ValidationError as err:
+        return custom_response(err.messages, 400)
 
     # check if user already exist in the db
     user_in_db = UserModel.get_user_by_email(data.get("email"))
@@ -28,7 +29,7 @@ def create():
 
     user = UserModel(data)
     user.save()
-    ser_data = user_schema.dump(user).data
+    ser_data = user_schema.dump(user)
     token = Auth.generate_token(ser_data.get("id"))
     return custom_response({"jwt_token": token}, 201)
 
@@ -40,7 +41,7 @@ def get_all():
   Get all users
   """
     users = UserModel.get_all_users()
-    ser_users = user_schema.dump(users, many=True).data
+    ser_users = user_schema.dump(users, many=True)
     return custom_response(ser_users, 200)
 
 
@@ -54,7 +55,7 @@ def get_a_user(user_id):
     if not user:
         return custom_response({"error": "user not found"}, 404)
 
-    ser_user = user_schema.dump(user).data
+    ser_user = user_schema.dump(user)
     return custom_response(ser_user, 200)
 
 
@@ -65,13 +66,14 @@ def update():
   Update me
   """
     req_data = request.get_json()
-    data, error = user_schema.load(req_data, partial=True)
-    if error:
-        return custom_response(error, 400)
+    try:
+        data = user_schema.load(req_data, partial=True)
+    except ValidationError as err:
+        return custom_response(err.messages, 400)
 
     user = UserModel.get_one_user(g.user.get("id"))
     user.update(data)
-    ser_user = user_schema.dump(user).data
+    ser_user = user_schema.dump(user)
     return custom_response(ser_user, 200)
 
 
@@ -93,7 +95,7 @@ def get_me():
   Get me
   """
     user = UserModel.get_one_user(g.user.get("id"))
-    ser_user = user_schema.dump(user).data
+    ser_user = user_schema.dump(user)
     return custom_response(ser_user, 200)
 
 
@@ -104,9 +106,10 @@ def login():
   """
     req_data = request.get_json()
 
-    data, error = user_schema.load(req_data, partial=True)
-    if error:
-        return custom_response(error, 400)
+    try:
+        data = user_schema.load(req_data, partial=True)
+    except ValidationError as err:
+        return custom_response(err.messages, 400)
     if not data.get("email") or not data.get("password"):
         return custom_response({"error": "you need email and password to sign in"}, 400)
     user = UserModel.get_user_by_email(data.get("email"))
@@ -114,7 +117,7 @@ def login():
         return custom_response({"error": "invalid credentials"}, 400)
     if not user.check_hash(data.get("password")):
         return custom_response({"error": "invalid credentials"}, 400)
-    ser_data = user_schema.dump(user).data
+    ser_data = user_schema.dump(user)
     token = Auth.generate_token(ser_data.get("id"))
     return custom_response({"jwt_token": token}, 200)
 

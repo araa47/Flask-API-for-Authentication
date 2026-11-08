@@ -8,7 +8,6 @@ flask = "*"
 flask-sqlalchemy = "*"
 "psycopg2" = "*"
 flask-migrate = "*"
-flask-script = "*"
 marshmallow = "*"
 flask-bcrypt = "*"
 pyjwt = "*"
@@ -24,4 +23,4 @@ flask-cors = "*"
 [dev-packages]
 
 [requires]
-python_version = "3.6"
+python_version = "3.12"

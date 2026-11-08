@@ -31,11 +31,11 @@ The program uses postgres sql database, one for testing and another for developm
 
 6) Currently there are a few config variables you will need to set in order to run the program they can be found in the .env.sample file. This file needs to be copied, and renamed as .env  . Afer this you can modify the variables to the values you need
 
-7) Once you have these values populated, you can initialize a migration ```python manage.py db init```. This should create a new migration subfolder in the project directory 
+7) Once you have these values populated, you can initialize a migration ```flask --app manage db init```. This should create a new migration subfolder in the project directory 
 
-8) Now you can run the script to populate files ```python manage.py db migrate ```
+8) Now you can run the script to populate files ```flask --app manage db migrate ```
 
-9) Finally apply changes to db by running ```python manage.py db upgrade```
+9) Finally apply changes to db by running ```flask --app manage db upgrade```
 
 10) You can confirm if the tables were created by running the ```psql``` command then running ```\connect dna``` and finally ```\dt``` to check wheter the users table was created. 
 

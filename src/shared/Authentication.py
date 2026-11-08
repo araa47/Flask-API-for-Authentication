@@ -21,11 +21,9 @@ class Auth:
             payload = {
                 "exp": datetime.datetime.utcnow() + datetime.timedelta(days=1),
                 "iat": datetime.datetime.utcnow(),
-                "sub": user_id,
+                "sub": str(user_id),
             }
-            return jwt.encode(payload, os.getenv("JWT_SECRET_KEY"), "HS256").decode(
-                "utf-8"
-            )
+            return jwt.encode(payload, os.getenv("JWT_SECRET_KEY"), "HS256")
         except Exception as e:
             return Response(
                 mimetype="application/json",
@@ -40,8 +38,8 @@ class Auth:
     """
         re = {"data": {}, "error": {}}
         try:
-            payload = jwt.decode(token, os.getenv("JWT_SECRET_KEY"))
-            re["data"] = {"user_id": payload["sub"]}
+            payload = jwt.decode(token, os.getenv("JWT_SECRET_KEY"), algorithms=["HS256"])
+            re["data"] = {"user_id": int(payload["sub"])}
             return re
         except jwt.ExpiredSignatureError as e1:
             re["error"] = {"message": "token expired, please login again"}

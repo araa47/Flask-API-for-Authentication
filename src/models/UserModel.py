@@ -1,5 +1,5 @@
 # src/models/UserModel.py
-from marshmallow import fields, Schema
+from marshmallow import fields, Schema, EXCLUDE
 import datetime
 from . import db, bcrypt
 
@@ -77,6 +77,9 @@ class UserModel(db.Model):
 
 
 class UserSchema(Schema):
+    class Meta:
+        unknown = EXCLUDE
+
     id = fields.Int(dump_only=True)
     first_name = fields.Str(required=True)
     last_name = fields.Str(required=True)
